@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<color name="colorPrimary">#ff4081</color>-->
+    <!--<color name="colorPrimaryDark">#e6b0c2</color>-->
+    <!--<color name="colorAccent">#FF4081</color>-->
+    <color name="colorPrimary">#4059ff</color>
+    <color name="colorPrimaryDark">#1c2771</color>
+    <color name="colorAccent">#4059ff</color>
+
+    <color name="transparentDark">#28000000</color>
+    <color name="transparentPink">#42ff4081</color>
+    <color name="transparentBlue">#424070ff</color>
+
+</resources>
