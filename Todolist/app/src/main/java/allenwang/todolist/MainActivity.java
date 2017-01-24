@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -36,9 +35,6 @@ public class MainActivity extends AppCompatActivity {
         MainFragment fragment = new MainFragment();
         navigateToFragement(fragment);
 
-        MenuItem item = menu.findItem(R.id.search_item);
-        mSearchView = (SearchView) MenuItemCompat.getActionView(item);
-        mSearchView.setOnQueryTextListener(fragment);
         MenuItem AddItem = menu.findItem(R.id.add_item);
         AddItem.setOnMenuItemClickListener(fragment);
         return true;

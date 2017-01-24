@@ -51,12 +51,6 @@ public class MainFragment extends android.support.v4.app.Fragment
         ApiInterface apiInterface = ApiServiceGenerator.createService(ApiInterface.class);
         Call<ArrayList<TodoItem>> call = apiInterface.getToDoList();
 
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("https://sheetsu.com/apis/v1.0/")
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-//        ApiInterface apiService = retrofit.create(ApiInterface.class);
-//        Call<ArrayList<TodoItem>> call = apiService.getToDoList();
         call.enqueue(new Callback<ArrayList<TodoItem>>() {
             @Override
             public void onResponse(Call<ArrayList<TodoItem>> call, Response<ArrayList<TodoItem>> response) {
