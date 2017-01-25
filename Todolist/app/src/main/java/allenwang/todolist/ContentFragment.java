@@ -9,7 +9,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+
+import java.util.List;
+
 import static allenwang.todolist.R.id.datePicker;
+import static allenwang.todolist.ToDoTable_Table.id;
 
 /**
  * Created by allenwang.
@@ -20,9 +25,17 @@ public class ContentFragment extends android.support.v4.app.Fragment implements 
     private Button mSendButton;
     private DatePicker mDatePicker;
 
+    private long mTodoItemId;
+    private ToDoTable mItem;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mTodoItemId= getArguments().getLong("id");
+            List<ToDoTable> organizationList = SQLite.select().from(ToDoTable.class)
+                    .where(id.eq(mTodoItemId)).queryList();
+            mItem = organizationList.get(0);
+        }
     }
 
     @Override
@@ -39,6 +52,11 @@ public class ContentFragment extends android.support.v4.app.Fragment implements 
         mSendButton = (Button) view.findViewById(R.id.sendButton);
         mSendButton.setOnClickListener(this);
         mDatePicker = (DatePicker) view.findViewById(datePicker);
+
+        if (mItem != null) {
+            mEditText.setText(mItem.title);
+            //mDatePicker.updateDate();
+        }
     }
 
     @Override

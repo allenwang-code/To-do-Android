@@ -1,13 +1,16 @@
 package allenwang.todolist;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -42,11 +45,22 @@ public class CardviewAdapter extends RecyclerView.Adapter<CardviewAdapter.ViewHo
         holder.mTitleTextView.setText(todoItem.title);
         holder.mDateTextView.setText(todoItem.date);
         holder.mCheckBox.setChecked(todoItem.isFinished);
-
+        holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                Toast.makeText(mContext, String.valueOf(b), Toast.LENGTH_SHORT).show();
+            }
+        });
         holder.mContainerCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mAdapterCallback.onArticleClick(todoItem.link);
+                if (mContext instanceof MainActivity) {
+                    ContentFragment f = new ContentFragment();
+                    Bundle b = new Bundle();
+                    b.putLong("id", todoItem.id);
+                    f.setArguments(b);
+                    ((MainActivity)mContext).navigateToFragement(f);
+                }
             }
         });
 
