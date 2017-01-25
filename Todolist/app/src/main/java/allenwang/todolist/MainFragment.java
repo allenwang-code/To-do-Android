@@ -8,17 +8,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.raizlabs.android.dbflow.config.DatabaseDefinition;
-import com.raizlabs.android.dbflow.config.FlowManager;
-import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
-import com.raizlabs.android.dbflow.structure.database.transaction.ITransaction;
-import com.raizlabs.android.dbflow.structure.database.transaction.Transaction;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.util.List;
 
 /**
  * Created by allenwang.
@@ -48,40 +41,45 @@ public class MainFragment extends android.support.v4.app.Fragment
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-        ApiInterface apiInterface = ApiServiceGenerator.createService(ApiInterface.class);
-        Call<ArrayList<TodoItem>> call = apiInterface.getToDoList();
+        List<ToDoTable> organizationList = SQLite.select().
+                from(ToDoTable.class).queryList();
 
-        call.enqueue(new Callback<ArrayList<TodoItem>>() {
-            @Override
-            public void onResponse(Call<ArrayList<TodoItem>> call, Response<ArrayList<TodoItem>> response) {
-                if (response.isSuccessful()) {
+        ((CardviewAdapter) mRecyclerView.getAdapter()).updateData(organizationList);
+        mRecyclerView.getAdapter().notifyDataSetChanged();
 
-                    todoItems = response.body();
-
-                    DatabaseDefinition database = FlowManager.getDatabase(AppDatabase.class);
-                    Transaction transaction = database.beginTransactionAsync(new ITransaction() {
-                        @Override
-                        public void execute(DatabaseWrapper databaseWrapper) {
-                            ToDoTable toDoTable = new ToDoTable();
-                            toDoTable.save();
-                        }
-                    }).build();
-                    transaction.execute();
-
-
-                    ((CardviewAdapter) mRecyclerView.getAdapter()).updateData(todoItems);
-                    mRecyclerView.getAdapter().notifyDataSetChanged();
-
-                } else {
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<TodoItem>> call, Throwable t) {
-
-            }
-        });
+//        ApiInterface apiInterface = ApiServiceGenerator.createService(ApiInterface.class);
+//        Call<ArrayList<TodoItem>> call = apiInterface.getToDoList();
+//        call.enqueue(new Callback<ArrayList<TodoItem>>() {
+//            @Override
+//            public void onResponse(Call<ArrayList<TodoItem>> call, Response<ArrayList<TodoItem>> response) {
+//                if (response.isSuccessful()) {
+//
+//                    todoItems = response.body();
+//
+//                    DatabaseDefinition database = FlowManager.getDatabase(AppDatabase.class);
+//                    Transaction transaction = database.beginTransactionAsync(new ITransaction() {
+//                        @Override
+//                        public void execute(DatabaseWrapper databaseWrapper) {
+//                            ToDoTable toDoTable = new ToDoTable();
+//                            toDoTable.save();
+//                        }
+//                    }).build();
+//                    transaction.execute();
+//
+//
+//                    ((CardviewAdapter) mRecyclerView.getAdapter()).updateData(todoItems);
+//                    mRecyclerView.getAdapter().notifyDataSetChanged();
+//
+//                } else {
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ArrayList<TodoItem>> call, Throwable t) {
+//
+//            }
+//        });
 
     }
 

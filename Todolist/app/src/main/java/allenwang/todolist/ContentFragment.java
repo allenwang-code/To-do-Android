@@ -49,6 +49,11 @@ public class ContentFragment extends android.support.v4.app.Fragment implements 
         int day = mDatePicker.getDayOfMonth();
         String date = year + "-" + month + "-" + day;
 
+        ToDoTable todo = new ToDoTable();
+        todo.date = date;
+        todo.title = title;
+        todo.save();
+
         Toast.makeText(getContext(), title + "  " + date, Toast.LENGTH_SHORT).show();
     }
 }

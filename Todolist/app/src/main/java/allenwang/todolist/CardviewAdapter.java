@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by allenwang.
@@ -17,12 +17,12 @@ import java.util.ArrayList;
 public class CardviewAdapter extends RecyclerView.Adapter<CardviewAdapter.ViewHolder> {
     private Context mContext;
     private AdapterCallback mAdapterCallback;
-    private ArrayList<TodoItem> mDataset;
+    private List<ToDoTable> mDataset;
 
     /**
      * package
      */
-    CardviewAdapter(Context context, AdapterCallback callback, ArrayList myDataset) {
+    CardviewAdapter(Context context, AdapterCallback callback, List myDataset) {
         mDataset = myDataset;
         mContext = context;
         mAdapterCallback = callback;
@@ -37,11 +37,11 @@ public class CardviewAdapter extends RecyclerView.Adapter<CardviewAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final TodoItem todoItem = mDataset.get(position);
+        final ToDoTable todoItem = mDataset.get(position);
 
-        holder.mTitleTextView.setText(todoItem.getDetail());
-        holder.mDateTextView.setText(todoItem.getDatetime());
-        holder.mCheckBox.setChecked(todoItem.getIsFinished());
+        holder.mTitleTextView.setText(todoItem.title);
+        holder.mDateTextView.setText(todoItem.date);
+        holder.mCheckBox.setChecked(todoItem.isFinished);
 
         holder.mContainerCardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +60,7 @@ public class CardviewAdapter extends RecyclerView.Adapter<CardviewAdapter.ViewHo
     /**
      * package
      */
-    void updateData(ArrayList<TodoItem> myDataset) {
+    void updateData(List<ToDoTable> myDataset) {
         mDataset = myDataset;
     }
 
