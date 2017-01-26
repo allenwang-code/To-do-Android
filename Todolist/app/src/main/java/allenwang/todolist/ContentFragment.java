@@ -31,10 +31,12 @@ public class ContentFragment extends android.support.v4.app.Fragment implements 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mTodoItemId= getArguments().getLong("id");
+            mTodoItemId = getArguments().getLong("id");
             List<ToDoTable> organizationList = SQLite.select().from(ToDoTable.class)
                     .where(id.eq(mTodoItemId)).queryList();
             mItem = organizationList.get(0);
+        } else {
+            mTodoItemId = -1;
         }
     }
 
@@ -70,7 +72,8 @@ public class ContentFragment extends android.support.v4.app.Fragment implements 
         ToDoTable todo = new ToDoTable();
         todo.date = date;
         todo.title = title;
-        todo.save();
+        if (mTodoItemId == -1) { todo.save(); }
+        else { todo.update(); }
 
         Toast.makeText(getContext(), title + "  " + date, Toast.LENGTH_SHORT).show();
     }
