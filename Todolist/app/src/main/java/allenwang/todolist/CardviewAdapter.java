@@ -58,8 +58,7 @@ public class CardviewAdapter extends RecyclerView.Adapter<CardviewAdapter.ViewHo
                     ContentFragment f = new ContentFragment();
                     Bundle b = new Bundle();
                     b.putLong("id", todoItem.id);
-                    f.setArguments(b);
-                    ((MainActivity)mContext).navigateToFragement(f);
+                    ((MainActivity)mContext).navigateToFragement(f, b);
                 }
             }
         });
