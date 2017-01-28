@@ -75,6 +75,7 @@ public class ContentFragment extends android.support.v4.app.Fragment implements 
         if (mTodoItemId == -1) { todo.save(); }
         else { todo.update(); }
 
+        getActivity().onBackPressed();
         Toast.makeText(getContext(), title + "  " + date, Toast.LENGTH_SHORT).show();
     }
 }

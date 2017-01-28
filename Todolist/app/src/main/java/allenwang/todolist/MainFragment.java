@@ -41,12 +41,6 @@ public class MainFragment extends android.support.v4.app.Fragment
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-        List<ToDoTable> organizationList = SQLite.select().
-                from(ToDoTable.class).queryList();
-
-        ((CardviewAdapter) mRecyclerView.getAdapter()).updateData(organizationList);
-        mRecyclerView.getAdapter().notifyDataSetChanged();
-
 //        ApiInterface apiInterface = ApiServiceGenerator.createService(ApiInterface.class);
 //        Call<ArrayList<TodoItem>> call = apiInterface.getToDoList();
 //        call.enqueue(new Callback<ArrayList<TodoItem>>() {
@@ -93,12 +87,11 @@ public class MainFragment extends android.support.v4.app.Fragment
     @Override
     public void onResume() {
         super.onResume();
-    }
+        List<ToDoTable> organizationList = SQLite.select().
+                from(ToDoTable.class).queryList();
 
-    public void onArticleClick(String url) {
-        Bundle bundle = new Bundle();
-        bundle.putString("url", url);
-        ((MainActivity) getActivity()).navigateToFragement(new ContentFragment(), bundle);
+        ((CardviewAdapter) mRecyclerView.getAdapter()).updateData(organizationList);
+        mRecyclerView.getAdapter().notifyDataSetChanged();
     }
 
     @Override
@@ -106,5 +99,10 @@ public class MainFragment extends android.support.v4.app.Fragment
         ContentFragment fragment = new ContentFragment();
         ((MainActivity) getActivity()).navigateToFragement(fragment);
         return false;
+    }
+
+    @Override
+    public void onArticleClick(String url) {
+
     }
 }
