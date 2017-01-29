@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         fragment.setArguments(bundle);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.mainFragment_container,
+        ft.replace(R.id.mainFragment_container,
                 fragment,
                 fragment.getClass().getSimpleName()
         );

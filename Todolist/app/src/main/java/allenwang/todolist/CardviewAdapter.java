@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.raizlabs.android.dbflow.sql.language.Update;
+import com.raizlabs.android.dbflow.sql.language.Where;
 
 import java.util.List;
 
@@ -39,16 +41,21 @@ public class CardviewAdapter extends RecyclerView.Adapter<CardviewAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         final ToDoTable todoItem = mDataset.get(position);
 
         holder.mTitleTextView.setText(todoItem.title);
         holder.mDateTextView.setText(todoItem.date);
         holder.mCheckBox.setChecked(todoItem.isFinished);
+
+
         holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                Toast.makeText(mContext, String.valueOf(b), Toast.LENGTH_SHORT).show();
+                Where update = new Update<>(ToDoTable.class)
+                        .set(ToDoTable_Table.isFinished.eq(b))
+                        .where(ToDoTable_Table.id.is(todoItem.id));
+                update.execute();
             }
         });
         holder.mContainerCardView.setOnClickListener(new View.OnClickListener() {
