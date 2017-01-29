@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.raizlabs.android.dbflow.sql.language.Update;
+import com.raizlabs.android.dbflow.sql.language.Where;
 
 import java.util.List;
 
@@ -73,9 +75,18 @@ public class ContentFragment extends android.support.v4.app.Fragment implements 
         todo.date = date;
         todo.title = title;
         if (mTodoItemId == -1) { todo.save(); }
-        else { todo.update(); }
+        else { update(todo); }
 
         getActivity().onBackPressed();
         Toast.makeText(getContext(), title + "  " + date, Toast.LENGTH_SHORT).show();
+    }
+
+    private void update(ToDoTable todo) {
+        Where update = new Update<>(ToDoTable.class)
+                .set(ToDoTable_Table.title.eq(todo.title),
+                        ToDoTable_Table.date.eq(todo.date)
+                        )
+                .where(ToDoTable_Table.id.is(mTodoItemId));
+        update.execute();
     }
 }
