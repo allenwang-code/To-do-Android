@@ -75,26 +75,31 @@ public class ContentFragment extends android.support.v4.app.Fragment implements 
             String month = date.substring(firstDash+1, secondDash);
             String day = date.substring(secondDash+1, date.length());
             mDatePicker.updateDate(Integer.parseInt(year),
-                    Integer.parseInt(month),
+                    Integer.parseInt(month)-1,
                     Integer.parseInt(day));
         }
     }
 
     @Override
     public void onClick(View v) {
-        String title = mEditText.getText().toString();
-        int year = mDatePicker.getYear();
-        int month = mDatePicker.getMonth();
-        int day = mDatePicker.getDayOfMonth();
-        String date = year + "-" + month + "-" + day;
+        if (v.getId() == R.id.sendButton) {
+            String title = mEditText.getText().toString();
+            int year = mDatePicker.getYear();
+            int month = mDatePicker.getMonth()+1;
+            int day = mDatePicker.getDayOfMonth();
+            String date = year + "-" + month + "-" + day;
 
-        ToDoTable todo = new ToDoTable();
-        todo.date = date;
-        todo.title = title;
-        if (mTodoItemId == -1) { todo.save(); }
-        else { update(todo); }
+            ToDoTable todo = new ToDoTable();
+            todo.date = date;
+            todo.title = title;
+            if (mTodoItemId == -1) {
+                todo.save();
+            } else {
+                update(todo);
+            }
 
-        ((MainActivity)getActivity()).navigateToFragement(new MainFragment());
+            ((MainActivity) getActivity()).navigateToFragement(new MainFragment());
+        }
     }
 
     private void update(ToDoTable todo) {
