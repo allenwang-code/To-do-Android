@@ -1,9 +1,11 @@
 package allenwang.todolist;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -56,9 +58,25 @@ public class ContentFragment extends android.support.v4.app.Fragment implements 
         mSendButton.setOnClickListener(this);
         mDatePicker = (DatePicker) view.findViewById(datePicker);
 
+        mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
         if (mItem != null) {
             mEditText.setText(mItem.title);
-            //mDatePicker.updateDate();
+            String date = mItem.date;
+            int firstDash = date.indexOf("-");
+            int secondDash = date.lastIndexOf("-");
+            String year = date.substring(0, firstDash);
+            String month = date.substring(firstDash+1, secondDash);
+            String day = date.substring(secondDash+1, date.length());
+            mDatePicker.updateDate(Integer.parseInt(year),
+                    Integer.parseInt(month),
+                    Integer.parseInt(day));
         }
     }
 
@@ -66,7 +84,7 @@ public class ContentFragment extends android.support.v4.app.Fragment implements 
     public void onClick(View v) {
         String title = mEditText.getText().toString();
         int year = mDatePicker.getYear();
-        int month = mDatePicker.getMonth() + 1;
+        int month = mDatePicker.getMonth();
         int day = mDatePicker.getDayOfMonth();
         String date = year + "-" + month + "-" + day;
 
@@ -87,4 +105,10 @@ public class ContentFragment extends android.support.v4.app.Fragment implements 
                 .where(ToDoTable_Table.id.is(mTodoItemId));
         update.execute();
     }
+
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
 }
