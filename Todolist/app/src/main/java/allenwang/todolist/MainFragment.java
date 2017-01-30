@@ -23,7 +23,6 @@ public class MainFragment extends android.support.v4.app.Fragment
 
     private RecyclerView mRecyclerView;
     private CardviewAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     private List<ToDoTable> todoItems = new ArrayList();
 
@@ -35,38 +34,16 @@ public class MainFragment extends android.support.v4.app.Fragment
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mAdapter = new CardviewAdapter(getActivity(), this, todoItems);
 
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                //Remove swiped item from list and notify the RecyclerView
-                int pos = viewHolder.getAdapterPosition();
-
-                SQLite.delete(ToDoTable.class)
-                        .where(ToDoTable_Table.id.is(todoItems.get(pos).id))
-                        .query();
-
-                todoItems.remove(pos);
-                mAdapter.notifyDataSetChanged();
-
-            }
-        };
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new MyCallBack();
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
-
-
 
 //        ApiInterface apiInterface = ApiServiceGenerator.createService(ApiInterface.class);
 //        Call<ArrayList<TodoItem>> call = apiInterface.getToDoList();
@@ -130,5 +107,30 @@ public class MainFragment extends android.support.v4.app.Fragment
     @Override
     public void onArticleClick(String url) {
 
+    }
+
+    private class MyCallBack extends ItemTouchHelper.SimpleCallback
+
+    {
+        public MyCallBack() {
+            super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        }
+
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+            int pos = viewHolder.getAdapterPosition();
+
+            SQLite.delete(ToDoTable.class)
+                    .where(ToDoTable_Table.id.is(todoItems.get(pos).id))
+                    .query();
+
+            todoItems.remove(pos);
+            mAdapter.notifyDataSetChanged();
+        }
     }
 }

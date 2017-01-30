@@ -5,7 +5,6 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +15,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private Toolbar mToolbar;
-    private SearchView mSearchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +43,9 @@ public class MainActivity extends AppCompatActivity {
         boolean isHavingStack = getSupportFragmentManager().getBackStackEntryCount() > 1;
         if (isHavingStack) {
             getSupportFragmentManager().popBackStack();
-            getSupportActionBar().show();
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().show();
+            }
         } else {
             //popUpToCheckLeaving();
         }
