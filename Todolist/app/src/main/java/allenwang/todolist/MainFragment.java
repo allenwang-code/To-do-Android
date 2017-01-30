@@ -44,41 +44,6 @@ public class MainFragment extends android.support.v4.app.Fragment
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
-
-//        ApiInterface apiInterface = ApiServiceGenerator.createService(ApiInterface.class);
-//        Call<ArrayList<TodoItem>> call = apiInterface.getToDoList();
-//        call.enqueue(new Callback<ArrayList<TodoItem>>() {
-//            @Override
-//            public void onResponse(Call<ArrayList<TodoItem>> call, Response<ArrayList<TodoItem>> response) {
-//                if (response.isSuccessful()) {
-//
-//                    todoItems = response.body();
-//
-//                    DatabaseDefinition database = FlowManager.getDatabase(AppDatabase.class);
-//                    Transaction transaction = database.beginTransactionAsync(new ITransaction() {
-//                        @Override
-//                        public void execute(DatabaseWrapper databaseWrapper) {
-//                            ToDoTable toDoTable = new ToDoTable();
-//                            toDoTable.save();
-//                        }
-//                    }).build();
-//                    transaction.execute();
-//
-//
-//                    ((CardviewAdapter) mRecyclerView.getAdapter()).updateData(todoItems);
-//                    mRecyclerView.getAdapter().notifyDataSetChanged();
-//
-//                } else {
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ArrayList<TodoItem>> call, Throwable t) {
-//
-//            }
-//        });
-
     }
 
     @Override
